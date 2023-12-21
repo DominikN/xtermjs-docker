@@ -21,6 +21,34 @@ sudo apt install trzsz
 ttyd -W --interface hnet0 --ipv6 --port 8081 -t enableSixel=true -t enableTrzsz=true bash
 ```
 
+## Systemd
+
+Create `/etc/systemd/system/ttyd.service` with the following content:
+
+```
+[Unit]
+Description=TTYD
+After=syslog.target
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/ttyd -W --interface hnet0 --ipv6 --port 8081 --cwd /home/husarion -t enableSixel=true -t enableTrzsz=true bash
+Type=simple
+Restart=always
+User=husarion
+Group=husarion
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Activate with:
+
+```bash
+sudo systemctl start ttyd && sudo systemctl enable ttyd
+```
+## Using
+
 Potem wbijamy w przeglądarce na http://rosbot2r:8081:
 
 1. Aby wyświetlić grafikę:
